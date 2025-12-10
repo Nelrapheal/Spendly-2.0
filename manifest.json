@@ -1,0 +1,20 @@
+{
+  "name": "Splendly Expense Tracker",
+  "short_name": "Splendly",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#101122",
+  "theme_color": "#4447ee",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "logo.png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "logo.png"
+    }
+  ]
+}

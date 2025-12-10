@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json">
+  <link rel="shortcut icon" type="image/x-icon" href="logo.png">
+<meta name="theme-color" content="#4447ee">
+  <title>Expense Tracker Dashboard</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4447ee",
+            "background-light": "#f6f6f8",
+            "background-dark": "#101122",
+          },
+          fontFamily: {
+            display: ["Manrope", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+
+    .glassmorphism {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body class="bg-background-dark font-display text-white">
+
+  <div class="relative flex flex-col min-h-screen">
+
+    <!-- HEADER -->
+    <header class="flex flex-col gap-2 p-4 pb-2 sticky top-0 z-10 bg-background-dark/80 backdrop-blur-sm">
+      <div class="flex items-center justify-between h-12">
+        <span class="material-symbols-outlined text-primary" style="font-size:32px">account_balance_wallet</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold">Splendly</h1>
+      <p id="date" class="px-4 pt-1 pb-3 text-gray-400 text-base ml-[-12px]"></p>
+    </header>
+
+    <!-- TOTAL BUDGET DASHBOARD -->
+    <section class="p-4">
+      <div class="glassmorphism flex flex-col gap-4 rounded-xl p-4">
+        <p class="text-lg font-bold">Total Budget</p>
+        <p id="amo" class="text-4xl font-bold tracking-tighter">₦0</p>
+
+        <div class="flex flex-col gap-2">
+          <div class="h-2 rounded-full bg-green-500/20">
+            <div id="progressBar" class="h-2 rounded-full bg-green-500" style="width:0%"></div>
+          </div>
+          <div class="flex justify-between text-sm text-gray-300">
+            <p>Spent: <span id="spentDash" class="spentDash font-medium text-white">₦0</span></p>
+            <p>Remaining: <span id="rem" class="font-medium text-white">₦0</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADD ALLOWANCE -->
+    <section class="px-4">
+      <h2 class="text-lg font-bold pt-4 pb-2">Add Allowance</h2>
+      <div class="glassmorphism flex flex-col gap-4 rounded-xl p-4">
+        <div class="flex gap-4 items-center">
+          <input id="amount" type="number" placeholder="Amount (₦)" class="w-full rounded-lg bg-white/10 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:ring-primary border-0"/>
+          <button id="amountbtn" class="bg-emerald-500 px-6 py-3 rounded-lg font-bold">Add</button>
+        </div>
+        <button id="resetBudgetBtn" class="bg-red-600 py-3 rounded-lg font-bold w-full mt-2">Reset Budget</button>
+      </div>
+    </section>
+
+    <!-- ADD EXPENSE -->
+    <section class="px-4">
+      <h2 class="text-lg font-bold pt-4 pb-2">Quick Add Expense</h2>
+      <div class="glassmorphism flex flex-col gap-4 rounded-xl p-4">
+        <input id="expName" type="text" placeholder="Expense Name (e.g. Lunch)" class="w-full rounded-lg bg-white/10 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:ring-primary border-0"/>
+
+        <div class="grid grid-cols-2 gap-4">
+          <input id="expAmount" type="number" placeholder="Amount (₦)" class="w-full rounded-lg bg-white/10 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:ring-primary border-0"/>
+          <select id="expCategory" class="w-full rounded-lg bg-white/10 px-4 py-3 text-white focus:ring-2 focus:ring-primary border-0">
+            <option>Food</option>
+            <option>Transport</option>
+            <option>Shopping</option>
+            <option>Bills</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <button id="addExpenseBtn" class="w-full bg-primary py-3 rounded-lg font-bold">Add Expense</button>
+      </div>
+    </section>
+
+    <!-- RECENT EXPENSES -->
+    <section class="px-4 pb-24">
+      <h2 class="text-lg font-bold pt-6 pb-2">Recent Expenses</h2>
+      <div class="recent-expenses flex flex-col gap-3"></div>
+    </section>
+
+    <!-- FOOTER: Today & Month Spent -->
+    <footer class="fixed bottom-0 left-0 right-0 z-10 p-4">
+      <div class="glassmorphism w-full rounded-xl p-3 text-center text-sm font-medium text-white shadow-lg flex justify-center gap-2">
+        <span>Today: <span id="todaySpent" class="font-bold">₦0</span></span>
+        <span class="text-gray-500">|</span>
+        <span>This Month: <span id="monthSpent" class="font-bold">₦0</span></span>
+      </div>
+    </footer>
+
+  </div>
+  <script>
+    if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js")
+    .then(() => console.log("Service Worker Registered"))
+    .catch(err => console.log("Service Worker Registration Failed:", err));
+}
+  </script>
+
+  <script src="main.js"></script>
+</body>
+</html>
